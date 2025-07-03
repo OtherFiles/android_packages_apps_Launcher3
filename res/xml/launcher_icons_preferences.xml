@@ -36,7 +36,7 @@
         android:max="150"
         android:min="50"
         settings:units="%"
-        android:defaultValue="100" />
+        android:defaultValue="110" />
 
     <com.android.launcher3.settings.preferences.CustomSeekBarPreference
         android:key="pref_custom_font_size"
