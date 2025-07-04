@@ -18,6 +18,7 @@ package com.android.launcher3.icons;
 
 import android.content.Context;
 import android.graphics.drawable.AdaptiveIconDrawable;
+import com.android.launcher3.Utilities;
 import android.graphics.drawable.Drawable;
 import android.os.UserHandle;
 
@@ -58,6 +59,8 @@ public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
     private final ConcurrentLinkedQueue<LauncherIcons> mPool;
 	
 	private MonochromeIconFactory mMonochromeIconFactory;
+	
+	private boolean mForceMonoIconEnabled;
 
     protected LauncherIcons(Context context, int fillResIconDpi, int iconBitmapSize,
             ConcurrentLinkedQueue<LauncherIcons> pool) {
@@ -65,6 +68,7 @@ public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
                 IconShape.INSTANCE.get(context).getShape().enableShapeDetection());
         mMonoIconEnabled = Themes.isThemedIconEnabled(context);
         mPool = pool;
+		mForceMonoIconEnabled = Utilities.isForcedMonoIconEnabled(context);
     }
 
     /**
@@ -78,7 +82,7 @@ public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
 	@Override
     protected Drawable getMonochromeDrawable(AdaptiveIconDrawable base) {
         Drawable mono = super.getMonochromeDrawable(base);
-        if (mono != null || !Flags.forceMonochromeAppIcons()) {
+        if (mono != null || !mForceMonoIconEnabled) {
             return mono;
         }
         if (mMonochromeIconFactory == null) {
